@@ -20,6 +20,7 @@ byte screen = 0, old_screen;
 #define STAT1 2
 #define STAT2 3
 #define AGRO1 4
+#define GPS1  5
 
 //Input Controls
 #define BT_UP           38
@@ -70,10 +71,10 @@ byte screen = 0, old_screen;
 #define FUELCAUTION 10.0         //10% Fuel Caution
 #define FUELWARN 5.0             //5% Fuel warning
 
-unsigned long deadtime, deadtimeOld, controlTime, controlTimeOld, refresh, rate;
+unsigned long deadtime, deadtimeOld, controlTime, controlTimeOld, refresh, rate, mapRefresh;
 unsigned long now;
 
-boolean Connected = false;
+boolean Connected = false, precision = false;
 
 byte caution = 0, warning = 0, id;
 
