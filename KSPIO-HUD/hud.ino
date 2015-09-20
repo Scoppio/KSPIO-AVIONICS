@@ -3,6 +3,12 @@ byte clearImage = 0, cLon, cLat, w, pointer = 0;
 byte mapOverlay [128];
 
 
+int a[] = {65 , 48};
+int b[] = {int(65-10*cos(degToRad(VData.Roll))) , int(48+10*sin(degToRad(VData.Roll))) };
+int c[] = {int(65+10*cos(degToRad(VData.Roll))), int(48-10*sin(degToRad(VData.Roll))) };
+int d[] = {int(65-5*cos(degToRad(VData.Roll+90))), int(48+5*sin(degToRad(VData.Roll+90))) };
+int e[] = {int(65+(15*sin(degToRad(VData.Pitch)))*cos(degToRad(VData.Roll+90))), int(48-(15*sin(degToRad(VData.Pitch)))*sin(degToRad(VData.Roll+90))) };
+
 void hud() {
 
   refresh = millis();
@@ -112,7 +118,7 @@ void hud() {
           
         Monitor.print(56,3,VData.Heading,0);
         Monitor.print(7,44,VData.Vsurf,0);
-        Monitor.set_cursor(103,44);
+        Monitor.set_cursor(103-6,44);
         printConverted(VData.RAlt,0);
         Monitor.print(103,44+8+8,VData.Pitch,0);
 
@@ -137,23 +143,41 @@ void hud() {
           Monitor.print("OFF"); 
         
         Monitor.select_font(font6x8);  
-        Monitor.draw_line(65,48,int(65-10*cos(degToRad(VData.Roll))), int(48+10*sin(degToRad(VData.Roll))), WHITE);
-        Monitor.draw_line(65,48,int(65+10*cos(degToRad(VData.Roll))), int(48-10*sin(degToRad(VData.Roll))), WHITE);        
-        Monitor.draw_line(int(65-10*cos(degToRad(VData.Roll))),int(48+10*sin(degToRad(VData.Roll))),int(65-5*cos(degToRad(VData.Roll+90))), int(48+5*sin(degToRad(VData.Roll+90))), WHITE);        
-        Monitor.draw_line(int(65+10*cos(degToRad(VData.Roll))),int(48-10*sin(degToRad(VData.Roll))),int(65-5*cos(degToRad(VData.Roll+90))), int(48+5*sin(degToRad(VData.Roll+90))), WHITE);        
+        b[0] = int(65-10*cos(degToRad(VData.Roll)));
+        b[1] = int(48+10*sin(degToRad(VData.Roll)));
+        c[0] = int(65+10*cos(degToRad(VData.Roll)));
+        c[1] = int(48-10*sin(degToRad(VData.Roll)));
 
+        d[0] = int(65-(5*sin(degToRad(VData.Pitch+90)))*cos(degToRad(VData.Roll+90)));
+        d[1] = int(48+(5*sin(degToRad(VData.Pitch+90)))*sin(degToRad(VData.Roll+90)));
+
+        e[0] = 65;
+        e[1] = int(48-(15*sin(degToRad(VData.Pitch))));
+
+        
+        Monitor.draw_line( a[0], a[1], b[0], b[1], WHITE);
+        Monitor.draw_line( a[0], a[1], c[0], c[1], WHITE);        
+        Monitor.draw_line( b[0], b[1], d[0], d[1], WHITE);        
+        Monitor.draw_line( c[0], c[1], d[0], d[1], WHITE);        
+        
+        Monitor.draw_line( d[0], d[1], e[0], e[1], WHITE);                
+        Monitor.draw_line( e[0], e[1], b[0], b[1],WHITE);
+        Monitor.draw_line( e[0], e[1], c[0], c[1],WHITE);
         //Linha do horizonte
         Monitor.draw_line(int(65-33*cos(degToRad(VData.Pitch))),int(48+33*sin(degToRad(VData.Pitch))), int(65+33*cos(degToRad(VData.Pitch))),int(48+33*sin(degToRad(VData.Pitch))), WHITE);       
     }
      
   if (screen == STAT1) {
-  
-    Monitor.print(0,0,"LOX ");  
-       Monitor.print(VData.OxidizerS/VData.OxidizerTotS*100, 2); 
-       Monitor.print("%");
+   Monitor.print(0,0,"LOX ");  
+//       Monitor.print(VData.OxidizerS / VData.OxidizerTotS * 100, 2); 
+       Monitor.print(VData.OxidizerS, 2); 
+       Monitor.print(" u");
+//       Monitor.print("%");
     Monitor.print(0,LINE*1,"RP1 ");       
-      Monitor.print( VData.LiquidFuelS / VData.LiquidFuelTotS*100, 2); 
-      Monitor.print("%");
+//      Monitor.print( VData.LiquidFuelS / VData.LiquidFuelTotS * 100, 2); 
+      Monitor.print( VData.LiquidFuelS, 2); 
+      Monitor.print(" u");      
+//      Monitor.print("%");
       
     Monitor.print(0,LINE*2,"MNP ");       
       Monitor.print(VData.MonoProp/VData.MonoPropTot*100, 2); 

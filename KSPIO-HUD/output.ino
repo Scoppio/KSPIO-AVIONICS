@@ -66,11 +66,13 @@ if (digitalRead (BT_A)) {
       }
       }
       
-      if (digitalRead(BT_LEFT)){
+     if (digitalRead(BT_LEFT)){
         while (digitalRead(BT_LEFT));        
         if ( pointer > 5) {
           pointer -= 5; 
-        } else{
+        } else if (pointer < 4 ) {
+          pointer = 15 + pointer;
+        } else {
           pointer = 18;         
         }
       }
@@ -88,40 +90,33 @@ if (digitalRead (BT_A)) {
           case 7:
           case 8:
           case 9:
-          case 10:
-            ControlGroups( pointer, HIGH);//~bitRead(VData.ActionGroups,pointer+5));
+           case 10:
+            ControlGroups( pointer, ~bitRead(VData.ActionGroups,pointer+5));
             break;
           case 11:
-            MainControls(SAS, HIGH);//~bitRead(VData.ActionGroups,AGSAS));             
+            MainControls(SAS, ~bitRead(VData.ActionGroups,AGSAS));             
             break;
           case 12: 
-            MainControls(RCS, HIGH);//~bitRead(VData.ActionGroups,AGRCS)); 
+            MainControls(RCS, ~bitRead(VData.ActionGroups,AGRCS)); 
             break;
           case 13: 
-            MainControls(LIGHTS, HIGH);//~bitRead(VData.ActionGroups,AGLight));
+            MainControls(LIGHTS, ~bitRead(VData.ActionGroups,AGLight));
             break;
           case 14:
-            MainControls(GEAR, HIGH);//~bitRead(VData.ActionGroups,AGGear)); 
+            MainControls(GEAR,~bitRead(VData.ActionGroups,AGGear)); 
             break;
           case 15:
-            MainControls(BRAKES, HIGH);// ~bitRead(VData.ActionGroups,AGBrakes));
+            MainControls(BRAKES,~bitRead(VData.ActionGroups,AGBrakes));
             break;
           case 16: 
-            MainControls(PRECISION, HIGH);//~precision); 
-            //precision = ~precision;
+            MainControls(PRECISION, ~precision); 
+            precision = ~precision;
             break;
           case 17:
-            MainControls(ABORT, HIGH);//~bitRead(VData.ActionGroups,AGAbort));
+            MainControls(ABORT, ~bitRead(VData.ActionGroups,AGAbort));
             break;
           case 18:
-            MainControls(STAGE, HIGH);  
-            /*
-            if (Connected) {
-              KSPBoardSendData(details(CPacket)); 
-            } 
-            while(digitalRead(BT_B));
-            MainControls(STAGE, LOW);              
-            /*/
+            MainControls(STAGE, HIGH);                          
             break;         
         }
           
@@ -129,6 +124,7 @@ if (digitalRead (BT_A)) {
           KSPBoardSendData(details(CPacket)); 
         }                          
         while(digitalRead(BT_B));
+        MainControls(STAGE, LOW); 
         
       }
     }
